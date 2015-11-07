@@ -32,7 +32,12 @@ npm install -g generator-wheel
 Finally, initiate the generator:
 
 ```bash
-yo wheel
+yo wheel            //初始化项目
+yo wheel:example    //新增example
+yo wheel:test       //新增测试用例文件
+gulp                //构建项目
+gulp watch          //监听example文件
+gulp test           //启动测试用例
 ```
 
 ### Getting To Know Yeoman

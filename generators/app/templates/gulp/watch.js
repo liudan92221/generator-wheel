@@ -19,46 +19,36 @@ function unRoot() {
     process.setuid(uid);
   }
 }
-module.exports = function(options, pages) {
+module.exports = function(options, pages, versionMap) {
 
-  var watchers = [];
+  var watchers = {};
   for (var i = 0; i < pages.length; i++) {
-    (function(page) {
-      watchers[i] = gulp.watch(['src/page/' + page + '/**'], function() {
+    var versionFile = versionMap[pages[i]];
+    watchers[pages[i]] = [];
+    for (var j = 0;j < versionFile.length;j++) {
+      (function(page, version) {
+        watchers[page][j] = gulp.watch(['example/'+page+'/'+version+'/**'], function() {
 
-        unRoot();
-        gulpMap['html'](options, page);
-        gulpMap['less'](options, page);
-        gulpMap['webpack'](options, page);
+          unRoot();
+          //gulpMap['html'](options, page);
+          gulpMap['less'](options, page, version);
+          //gulpMap['webpack'](options, page);
 
-      });
-      watchers[i].on('change', function(event) {
+        });
+        watchers[page][j].on('change', function(event) {
 
-        gutil.log(gutil.colors.yellow('File ' + event.path + ' was ' + event.type));
-      });
-    }(pages[i]));
+          gutil.log(gutil.colors.yellow('File ' + event.path + ' was ' + event.type));
+        });
+      }(pages[i], versionFile[j]));
+    }
   }
 
-  watchers[watchers.length] = gulp.watch(['src/lib/**'], function() {
+  watchers['lib'] = gulp.watch(['src/lib/**'], function() {
 
     unRoot();
     gulpMap['lib']();
   });
-  watchers[watchers.length - 1].on('change', function(event) {
+  watchers['lib'].on('change', function(event) {
     gutil.log(gutil.colors.yellow('File ' + event.path + ' was ' + event.type));
   });
-
-  watchers[watchers.length] = gulp.watch(['src/component/**', 'src/service/**', 'src/util/**', 'src/widget/**'], function() {
-
-    for (var i = 0; i < pages.length; i++) {
-      unRoot();
-      gulpMap['html'](options, pages[i]);
-      gulpMap['less'](options, pages[i]);
-      gulpMap['webpack'](options, pages[i]);
-    }
-  });
-  watchers[watchers.length - 1].on('change', function(event) {
-    gutil.log(gutil.colors.yellow('File ' + event.path + ' was ' + event.type));
-  });
-
 };

@@ -5,6 +5,6 @@ var gutil = require('gulp-util');
 
 module.exports = function() {
   gulp.src('src/lib/**')
-    .pipe(gulp.dest('build/lib/'));
-  gutil.log(gutil.colors.green('Copy libs: build/lib'));
+    .pipe(gulp.dest('dist/lib/'));
+  gutil.log(gutil.colors.green('Copy libs: dist/lib'));
 };

@@ -19,7 +19,7 @@ module.exports = function(options) {
     entry: './src/' + options.main_js,
     output: {
       path: './dist/'+version,
-      filename: '[name]/_index.js',
+      filename: '/'+name+'.js',
       chunkFilename: '[chunkhash].js'
     },
     module: {

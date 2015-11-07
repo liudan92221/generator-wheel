@@ -8,7 +8,7 @@ module.exports = function(options, page) {
   gulp.task('test', function () {
     //gutil.colors.green('Copy libs: build/lib');
     return gulp
-      .src('test/**/**.html')
+      .src('test/**/**/**.html')
       .pipe(mochaPhantomJS({
         reporter: 'list',
         mocha: {

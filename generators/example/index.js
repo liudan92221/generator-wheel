@@ -21,9 +21,9 @@ module.exports = yeoman.generators.Base.extend({
 
       var prompts = [
         {
-          name: 'testName',
-          message: 'Name of Test?',
-          default: 'yourTest',
+          name: 'exampleName',
+          message: 'Name of Example?',
+          default: 'yourExample',
           warning: ''
         },
         {
@@ -35,7 +35,7 @@ module.exports = yeoman.generators.Base.extend({
       ];
 
       this.prompt(prompts, function (props) {
-        this.testName = props.testName;
+        this.exampleName = props.exampleName;
         this.version = props.version;
         cb();
 
@@ -43,17 +43,22 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     app: function () {
-      var testSrc = 'test/'+this.testName+'/'+this.version;
+      this.fileName = path.basename(process.cwd());
+      var expSrc = 'example/'+this.exampleName+'/'+this.version;
 
-      this.mkdir(testSrc);
+      //this.mkdir(expSrc);
 
       this.template(
-        this.templatePath(templates+'test/index.html'),
-        this.destinationPath(testSrc+'/index.html')
+        this.templatePath(templates+'example/index.html'),
+        this.destinationPath(expSrc+'/index.html')
       );
       this.template(
-        this.templatePath(templates+'test/index.js'),
-        this.destinationPath(testSrc+'/index.js')
+        this.templatePath(templates+'example/index.js'),
+        this.destinationPath(expSrc+'/index.js')
+      );
+      this.template(
+        this.templatePath(templates+'example/index.less'),
+        this.destinationPath(expSrc+'/index.less')
       );
     },
 
